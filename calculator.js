@@ -196,8 +196,8 @@ function selectCalculator(event, type) {
   ) {
     currentCalculator = CALCULATOR_TYPES.FOV_TO_ZOOM;
 
-    selectFovToZoomBtn.classList.add("selected");
     selectZoomToFovBtn.classList.remove("selected");
+    selectFovToZoomBtn.classList.add("selected");
 
     calculator.removeChild(zoomToFovForm);
     calculator.removeChild(outputCard); // Also remove the output card, so the elements keep the correct order.
@@ -209,8 +209,8 @@ function selectCalculator(event, type) {
   ) {
     currentCalculator = CALCULATOR_TYPES.ZOOM_TO_FOV;
 
-    selectFovToZoomBtn.classList.add("selected");
-    selectZoomToFovBtn.classList.remove("selected");
+    selectFovToZoomBtn.classList.remove("selected");
+    selectZoomToFovBtn.classList.add("selected");
 
     calculator.removeChild(fovToZoomForm);
     calculator.removeChild(outputCard); // Also remove the output card, so the elements keep the correct order.
