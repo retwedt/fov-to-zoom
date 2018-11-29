@@ -1,0 +1,100 @@
+<!--
+  ---- A simple calculator for converting FOV to Zoom (and back) between 3ds Max and AE.
+  ---- Created By Rex Twedt
+  ---- Copyright 2018
+-->
+<html>
+  <head>
+    <title>FOV to Zoom Calculator</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+  </head>
+
+  <body>
+    <div id="more-info">
+      More Info
+      <div id="more-info-dialog">
+        <ul>
+          <li>
+            <a href="https://www.edmundoptics.com/resources/application-notes/imaging/understanding-focal-length-and-field-of-view/" target="_blank">Understanding Focal Length and Field of View (Edmund Optics)</a>
+          </li>
+          <li>
+            <a href="https://www.provideocoalition.com/inside-the-after-effects-camera/" target="_blank">Inside the After Effects Camera (Pro Video Coalition)</a>
+          </li>
+          <li>
+            <a href="https://forums.creativecow.net/docs/forums/post.php?forumid=2&postid=1041549&univpostid=1041549&pview=t" target="_blank">Creative Cow Forums</a>
+          </li>
+        </ul>
+        Created by Rex Twedt
+      </div>
+    </div>
+
+    <div id="calculator-selector">
+      <button class="selected" onclick="selectCalculator(event, CALCULATOR_TYPES.FOV_TO_ZOOM)" >FOV to Zoom</button>
+      <button onclick="selectCalculator(event, CALCULATOR_TYPES.ZOOM_TO_FOV)" >Zoom to FOV</button>
+    </div>
+
+    <!-- TODO(rex): Fades... -->
+    <div id="calculator" >
+      <div id="configure-fov-dimen">
+        <span id="cog">&#x2699;</span>
+        <form id="configure-fov-dimen-dialog" onchange="setFovDimen(event)">
+          <div>Select FOV Direction</div>
+          <label for="horz" >
+            <input type="radio" name="fovDimension" id="horz" value="horz" checked onchange="setFovDimen(event)" /> Horizontal
+          </label>
+          <label for="vert" >
+            <input type="radio" name="fovDimension" id="vert" value="vert" onchange="setFovDimen(event)" /> Vertical
+          </label>
+          <label for="diag" >
+            <input type="radio" name="fovDimension" id="diag" value="diag" onchange="setFovDimen(event)" /> Diagonal
+          </label>
+        </form>
+      </div>
+
+      <form id="fov-to-zoom" onsubmit="calculateZoom(event)" onkeyup="calculateZoom(event)">
+        <h1>FOV to Zoom Calculator</h1>
+        <label for="width">
+          Comp Width (px)
+          <input name="width" value=0 min=0 type="number" />
+        </label>
+        <label for="height">
+          Comp Height (px)
+          <input name="height" value=0 min=0 type="number" />
+        </label>
+        <label for="fov">
+          Field of View (deg)
+          <input name="fov" value=0 type="number" />
+        </label>
+        <div class="btn-wrap">
+          <button onclick="calculateZoom(event)" />Calculate!</button>
+        </div>
+      </form>
+
+      <form id="zoom-to-fov" onsubmit="calculateZoom(event)" onkeyup="calculateZoom(event)">
+        <h1>Zoom to FOV Calculator</h1>
+        <label for="width">
+          Comp Width (px)
+          <input name="width" value=0 min=0 type="number" />
+        </label>
+        <label for="height">
+          Comp Height (px)
+          <input name="height" value=0 min=0 type="number" />
+        </label>
+        <label for="zoom">
+          Zoom (mm)
+          <input name="zoom" value=0 type="number" />
+        </label>
+        <div class="btn-wrap">
+          <button onclick="calculateFov(event)" />Calculate!</button>
+        </div>
+      </form>
+  
+      <div id="output-card">
+        <h1>Zoom (px)</h1>
+        <div id="output">0</div>
+      </div>
+    </div>
+
+    <script src="calculator.js"></script>
+  </body>
+</html>
