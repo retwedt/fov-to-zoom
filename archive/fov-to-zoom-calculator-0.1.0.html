@@ -1,0 +1,456 @@
+<!--
+---- A simple calculator for converting FOV to Zoom (and back) between 3ds Max and AE.
+---- Created By Rex Twedt
+---- v0.1.0
+-->
+<html>
+  <head>
+    <title>FOV to Zoom Calculator</title>
+
+    <style>
+      html, body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Lucida Console", Monaco, monospace;
+      }
+      /* More Info Dialog */
+      #more-info {
+        position: absolute;
+        top: 0;
+        left: 0;
+        color: #bcbcbc;
+        background-color: #ffffff;
+        border: 1px solid #ffffff;
+        z-index: 20;
+        padding: 4px;
+        overflow: hidden;
+      }
+      #more-info:hover {
+        cursor: pointer;
+        border: 1px solid #eeeeee;
+      }
+      #more-info #more-info-dialog {
+        width: 260px;
+        padding: 0 6px;
+        background-color: #ffffff;
+        font-size: 12px;
+        visibility: hidden;
+        display: none;
+        opacity: 0;
+        z-index: 24;
+        transition: all 0.25s;
+      }
+      #more-info #more-info-dialog ul {
+        padding-left: 10px;
+      }
+      #more-info #more-info-dialog ul li {
+        margin: 8px auto;
+      }
+      #more-info #more-info-dialog ul li a {
+        color: #555555;
+      }
+      #more-info #more-info-dialog ul li a:hover {
+        color: #5a5a5a;
+      }
+      #more-info #more-info-dialog ul li a:a:visited {
+        color: #5e5e5e;
+      }
+      #more-info:hover #more-info-dialog,
+      #more-info #more-info-dialog:hover {
+        visibility: visible;
+        display: block;
+        opacity: 1;
+        cursor: pointer;
+        transition: all 0.25s;
+      }
+      /* Calculator Selector Buttons */
+      #calculator-selector {
+        position: absolute;
+        display: flex;
+        top: 0;
+        right: 0px;
+        width: 180px;
+        height: 60px;
+        z-index: 18;
+        border: 1px solid #eee;
+      }
+      #calculator-selector button {
+        width: 50%;
+        height: 100%;
+        flex: 1 auto;
+        margin: 0;
+        padding: 6px;
+        border: 1px solid #bcbcbc;
+        background-color: #555555;
+        color: #ffffff;
+        font-size: 16px;
+        font-family: "Lucida Console", Monaco, monospace;
+        transition: all 0.25s;
+      }
+      #calculator-selector button:hover {
+        background-color: #5a5a5a;
+        color: #f3f3f3;
+        cursor: pointer;
+        transition: all 0.25s;
+      }
+      #calculator-selector button:active {
+        background-color: #5e5e5e;
+        color: #f0f0f0;
+        transition: all 0.25s;
+      }
+      #calculator-selector button.selected {
+        background-color: #888888;
+        color: #eeeeee;
+        transition: all 0.25s;
+      }
+      #calculator-selector button.selected:hover {
+        background-color: #8d8d8d;
+        color: #e9e9e9;
+        cursor: pointer;
+        transition: all 0.25s;
+      }
+      #calculator-selector button.selected:active {
+        background-color: #8f8f8f;
+        color: #e0e0e0;
+        transition: all 0.25s;
+      }
+      /* Calculator */
+      .calculator {
+        width: 520px;
+        border: 1px solid #eee;
+        margin: auto;
+        padding: 20px;
+        background: #ffffff;
+        z-index: 16;
+        transition: all 0.25s;
+      }
+      .calculator form {
+        width: 100%;
+      }
+      .calculator form h1 {
+        width: 80%;
+        margin: 4px auto;
+        padding: 5px;
+        text-align: center;
+      }
+      .calculator form label {
+        display: block;
+        width: 60%;
+        margin: 4px auto;
+        padding: 5px;
+      }
+      .calculator form label input {
+        width: 100%;
+        padding: 2px;
+        font-family: "Lucida Console", Monaco, monospace;
+      }
+      .calculator form .btn-wrap {
+        width: 60%;
+        margin: 4px auto;
+        padding: 5px;
+        overflow: auto;
+      }
+      .calculator form .btn-wrap button {
+        float: right;
+        margin: auto;
+        padding: 8px;
+        border: none;
+        background-color: #555555;
+        color: #fff;
+        font-size: 20px;
+        font-family: "Lucida Console", Monaco, monospace;
+        transition: all 0.25s;
+      }
+      .calculator form .btn-wrap button:hover {
+        background-color: #5a5a5a;
+        color: #f3f3f3;
+        cursor: pointer;
+        transition: all 0.25s;
+      }
+      .calculator form .btn-wrap button:active {
+        background-color: #5e5e5e;
+        color: #f0f0f0;
+        transition: all 0.25s;
+      }
+      .calculator .output-card {
+        width: 60%;
+        border: 1px solid #eee;
+        margin: auto;
+        padding: 20px;
+      }
+      .calculator .output-card h1 {
+        width: 80%;
+        margin: auto;
+        padding: 5px;
+        text-align: center;
+      }
+      .calculator .output-card .output {
+        text-align: center;
+        font-size: 32px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .gone {
+        display: none;
+      }
+    </style>
+  </head>
+
+  <body>
+
+    <div id="more-info">
+      More Info
+      <div id="more-info-dialog">
+        <ul>
+          <li>
+            <a href="https://www.edmundoptics.com/resources/application-notes/imaging/understanding-focal-length-and-field-of-view/" target="_blank">Understanding Focal Length and Field of View (Edmund Optics)</a>
+          </li>
+          <li>
+            <a href="https://www.provideocoalition.com/inside-the-after-effects-camera/" target="_blank">Inside the After Effects Camera (Pro Video Coalition)</a>
+          </li>
+          <li>
+            <a href="https://forums.creativecow.net/docs/forums/post.php?forumid=2&postid=1041549&univpostid=1041549&pview=t" target="_blank">Creative Cow Forums</a>
+          </li>
+        </ul>
+        Created by Rex Twedt
+      </div>
+    </div>
+
+    <div id="calculator-selector">
+      <button class="selected" onclick="selectFovCalculator(event)" >FOV to Zoom</button>
+      <button onclick="selectZoomCalculator(event)" >Zoom to FOV</button>
+    </div>
+
+    <div class="calculator" id="fov-to-zoom-calculator">
+      <form id="fov-to-zoom" onsubmit="calculateZoom(event)">
+        <h1>FOV to Zoom Calculator</h1>
+        <label for="width">
+          Comp Width (px)
+          <input name="width" value=0 min=0 type="number" />
+        </label>
+        <label for="height">
+          Comp Height (px)
+          <input name="height" value=0 min=0 type="number" />
+        </label>
+        <label for="fov">
+          Field of View (deg)
+          <input name="fov" value=0 type="number" />
+        </label>
+        <div class="btn-wrap">
+          <button onclick="calculateZoom(event)" />Calculate!</button>
+        </div>
+      </form>
+  
+      <div class="output-card">
+        <h1>Zoom (px)</h1>
+        <div class="output">0</div>
+      </div>
+    </div>
+
+    <div class="calculator gone" id="zoom-to-fov-calculator">
+      <form id="zoom-to-fov">
+        <h1>Zoom to FOV Calculator</h1>
+        <label for="width">
+          Comp Width (px)
+          <input name="width" value=0 min=0 type="number" />
+        </label>
+        <label for="height">
+          Comp Height (px)
+          <input name="height" value=0 min=0 type="number" />
+        </label>
+        <label for="zoom">
+          Zoom (mm)
+          <input name="zoom" value=0 type="number" />
+        </label>
+        <div class="btn-wrap">
+          <button onclick="calculateFov(event)" />Calculate!</button>
+        </div>
+      </form>
+  
+      <div class="output-card">
+        <h1>FOV (deg)</h1>
+        <div class="output">0</div>
+      </div>
+    </div>
+
+    <script>
+
+      /* TESTING FUNCTIONS (remove these when we are done with them...) */
+
+      console.log(" ----- Start Tests -----");
+      console.log("\n");
+
+      console.log("degreesToRadians");
+      console.log(degreesToRadians(90)); // PI / 2 = 1.570796
+      console.log(degreesToRadians(180)); // PI
+      console.log(degreesToRadians(270)); // 3 * PI / 2 = 4.712388
+      console.log(degreesToRadians(360)); // 2 * PI
+      console.log("\n");
+
+      console.log("radiansToDegrees");
+      console.log(radiansToDegrees(Math.PI / 2)); // 90
+      console.log(radiansToDegrees(Math.PI)); // 180
+      console.log(radiansToDegrees(3 * Math.PI / 2)); // 270
+      console.log(radiansToDegrees(2 * Math.PI)); // 360
+      console.log("\n");
+
+      console.log("fovToZoom");
+      console.log(fovToZoom(1920, 1080, 45)); // 2317.645
+      console.log(fovToZoom(854, 480, 45)); // 1030.869
+      console.log("\n");
+
+      console.log("zoomToFov");
+      console.log(zoomToFov(1920, 1080, 2317.645)); // 45 deg
+      console.log(zoomToFov(854, 480, 1030.869)); // 45 deg
+      console.log("\n");
+
+      console.log(" ----- End Tests ----- ");
+
+
+      /* SETUP VARIABLES */
+
+      // Get some useful elements from the DOM.
+      const calculatorSelector = document.getElementById("calculator-selector");
+      const fovToZoomBtn = calculatorSelector.firstElementChild;
+      const zoomToFovBtn = calculatorSelector.lastElementChild;
+
+      const fovToZoomCalculator = document.getElementById("fov-to-zoom-calculator");
+      const fovToZoomForm = fovToZoomCalculator.querySelector("#fov-to-zoom");
+      const fovOutputEl = fovToZoomCalculator.querySelector(".output");
+
+      const zoomToFovCalculator = document.getElementById("zoom-to-fov-calculator");
+      const zoomToFovForm = zoomToFovCalculator.querySelector("#zoom-to-fov");
+      const zoomOutputEl = zoomToFovCalculator.querySelector(".output");
+
+      const moreInfoBtn = document.getElementById("more-info");
+      const moreInfoDialog = moreInfoBtn.querySelector("#more-info-dialog");
+
+      // Initialize variables to keep track of the current calculator we have selected.
+      const CALCULATOR_TYPES = {
+        "FOV_TO_ZOOM": "FOV_TO_ZOOM",
+        "ZOOM_TO_FOV": "ZOOM_TO_FOV",
+      }
+      let currentCalculator = CALCULATOR_TYPES.FOV_TO_ZOOM;
+
+
+      /* FUNCTIONS */
+
+      /**
+       * Convert a value from degrees to radians.
+       * @param {number} value - The value (in degrees) you want to convert to radians.
+       */
+      function degreesToRadians(value) {
+        return (Math.PI / 180) * value;
+      }
+
+      /**
+       * Convert a value from radians to degrees.
+       * @param {number} value - The value (in radians) you want to convert to degrees.
+       */
+      function radiansToDegrees(value) {
+        return (180 / Math.PI) * value;
+      }
+
+      /**
+       * Calculate the “zoom” (focal length) of a lens using the field of view
+       * @param {number} width        - The width of the comp (in px).
+       * @param {number} height       - The height of the comp (in px).
+       * @param {number} fieldOfView  - The field of view of the camera (in degrees).
+       */
+      function fovToZoom(width, height, fieldOfView) {
+        const rad = degreesToRadians(fieldOfView / 2);
+        const zoom = width / (2 * Math.tan(rad)); // horizontal
+        return zoom;
+      }
+
+      /**
+       * Calculate the field of view from the camera’s zoom value
+       * @param {number} width  - The width of the comp (in px).
+       * @param {number} height - The height of the comp (in px).
+       * @param {number} zoom   - The zoom value of the camera (in px).
+       */
+      function zoomToFov(width, height, zoom) {
+        let fov =  2 * Math.atan(width / (zoom * 2)); // horizontal
+        fov = radiansToDegrees(fov);
+        return fov;
+      }
+
+      /**
+       * Event listener that runs the fovToZoom calculation and updates the DOM.
+       * @param {DOM Event} event - DOM onclick event.
+       */
+      function calculateZoom(event) {
+        event.preventDefault();
+
+        const w = fovToZoomForm.width.value; // in px
+        const h = fovToZoomForm.height.value; // in px
+        const fov = fovToZoomForm.fov.value; // field of view in degrees
+        const zoom = fovToZoom(w, h, fov);
+
+        fovOutputEl.textContent = zoom;
+      }
+
+      /**
+       * Event listener that runs the zoomToFov calculation and updates the DOM.
+       * @param {DOM Event} event - DOM onclick event.
+       */
+      function calculateFov(event) {
+        event.preventDefault();
+
+        const w = zoomToFovForm.width.value; // in px
+        const h = zoomToFovForm.height.value; // in px
+        const zoom = zoomToFovForm.zoom.value; // zoom in mm
+        const fov = zoomToFov(w, h, zoom);
+
+        zoomOutputEl.textContent = fov;
+      }
+
+      /**
+       * Event listener to select the FOV to Zoom Calculator.
+       * @param {DOM Event} event - DOM onclick event.
+       */
+      function selectZoomCalculator(event) {
+        event.preventDefault();
+
+        if (currentCalculator === CALCULATOR_TYPES.FOV_TO_ZOOM) {
+          currentCalculator = CALCULATOR_TYPES.ZOOM_TO_FOV;
+
+          fovToZoomBtn.classList.remove("selected");
+          zoomToFovBtn.classList.add("selected");
+
+          fovToZoomCalculator.classList.add("gone");
+          zoomToFovCalculator.classList.remove("gone");
+
+        } else {
+          console.log("You have already selected that calculator!")
+        }
+      }
+
+      /**
+       * Event listener to select the Zoom to FOV Calculator.
+       * @param {DOM Event} event - DOM onclick event.
+       */
+      function selectFovCalculator(event) {
+        event.preventDefault();
+
+        if (currentCalculator === CALCULATOR_TYPES.ZOOM_TO_FOV) {
+          currentCalculator = CALCULATOR_TYPES.FOV_TO_ZOOM;
+
+          fovToZoomBtn.classList.add("selected");
+          zoomToFovBtn.classList.remove("selected");
+
+          fovToZoomCalculator.classList.remove("gone");
+          zoomToFovCalculator.classList.add("gone");
+
+        } else {
+          console.log("You have already selected that calculator!")
+        }
+      }
+
+    </script>
+  </body>
+</html>
