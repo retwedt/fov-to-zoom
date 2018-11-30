@@ -159,7 +159,7 @@ function selectCalculator(event, type) {
     selectFovToZoomBtn.classList.add("selected");
 
     calculator.removeChild(zoomToFovForm);
-    calculator.removeChild(outputCard); // Also remove the output card, so the elements keep the correct order.
+    calculator.removeChild(outputCard); // Also remove the output card, to be reinserted later.
     calculator.appendChild(fovToZoomForm);
     calculator.appendChild(outputCard); // Add the output card back at the end, so it keeps the correct order.
   } else if (
@@ -172,7 +172,7 @@ function selectCalculator(event, type) {
     selectZoomToFovBtn.classList.add("selected");
 
     calculator.removeChild(fovToZoomForm);
-    calculator.removeChild(outputCard); // Also remove the output card, so the elements keep the correct order.
+    calculator.removeChild(outputCard); // Also remove the output card, to be reinserted later.
     calculator.appendChild(zoomToFovForm);
     calculator.appendChild(outputCard); // Add the output card back at the end, so it keeps the correct order.
   } else {
