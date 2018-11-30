@@ -4,7 +4,6 @@
  * Copyright 2018
  */
 
-
 /* TESTING FUNCTIONS (always test your work!) */
 
 /**
@@ -17,6 +16,16 @@ Test.isEqual = (a, b) => {
 };
 
 console.log(" ----- Start Tests -----");
+console.log("\n");
+
+console.log("Test.isEqual => true");
+Test.isEqual(1, 1);
+Test.isEqual(Math.PI, Math.PI);
+console.log("\n");
+
+console.log("Test.isEqual => false");
+Test.isEqual(1, 0);
+Test.isEqual(Math.PI, Math.E);
 console.log("\n");
 
 console.log("degreesToRadians");
