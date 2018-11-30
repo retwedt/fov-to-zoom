@@ -1,0 +1,131 @@
+/**
+ * FOV to Zoom (and back) Calculator.
+ * Created by Rex Twedt
+ * Copyright 2018
+ */
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Lucida Console", Monaco, monospace;
+}
+
+/* More Info Dialog */
+#more-info {
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: #bcbcbc;
+  background-color: #ffffff;
+  border: 1px solid #ffffff;
+  z-index: 20;
+  padding: 4px;
+  overflow: hidden;
+}
+#more-info:hover {
+  cursor: pointer;
+  border: 1px solid #eeeeee;
+}
+#more-info #more-info-dialog {
+  width: 260px;
+  padding: 0 6px;
+  background-color: #ffffff;
+  font-size: 12px;
+  visibility: hidden;
+  display: none;
+  opacity: 0;
+  z-index: 24;
+  transition: all 0.25s;
+}
+#more-info #more-info-dialog ul {
+  padding-left: 10px;
+}
+#more-info #more-info-dialog ul li {
+  margin: 8px auto;
+}
+#more-info #more-info-dialog ul li a {
+  color: #555555;
+}
+#more-info #more-info-dialog ul li a:hover {
+  color: #5a5a5a;
+}
+#more-info #more-info-dialog ul li a:a:visited {
+  color: #5e5e5e;
+}
+#more-info:hover #more-info-dialog,
+#more-info #more-info-dialog:hover {
+  visibility: visible;
+  display: block;
+  opacity: 1;
+  cursor: pointer;
+  transition: all 0.25s;
+}
+
+/* Calculator Selector Buttons */
+#calculator-selector {
+  position: absolute;
+  display: flex;
+  top: 0;
+  right: 0px;
+  width: 180px;
+  height: 60px;
+  z-index: 18;
+  border: 1px solid #eee;
+}
+#calculator-selector button {
+  width: 50%;
+  height: 100%;
+  flex: 1 auto;
+  margin: 0;
+  padding: 6px;
+  border: 1px solid #bcbcbc;
+  background-color: #555555;
+  color: #ffffff;
+  font-size: 16px;
+  font-family: "Lucida Console", Monaco, monospace;
+  transition: all 0.25s;
+}
+#calculator-selector button:hover {
+  background-color: #5a5a5a;
+  color: #f3f3f3;
+  cursor: pointer;
+  transition: all 0.25s;
+}
+#calculator-selector button:active {
+  background-color: #5e5e5e;
+  color: #f0f0f0;
+  transition: all 0.25s;
+}
+#calculator-selector button.selected {
+  background-color: #888888;
+  color: #eeeeee;
+  transition: all 0.25s;
+}
+#calculator-selector button.selected:hover {
+  background-color: #8d8d8d;
+  color: #e9e9e9;
+  cursor: pointer;
+  transition: all 0.25s;
+}
+#calculator-selector button.selected:active {
+  background-color: #8f8f8f;
+  color: #e0e0e0;
+  transition: all 0.25s;
+}
+
+/* Transitions */
+.hide {
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.show {
+  opacity: 1;
+  transition: opacity 0.2s;
+}
+.gone {
+  display: none;
+}
