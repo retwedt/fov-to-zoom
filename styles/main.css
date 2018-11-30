@@ -34,8 +34,8 @@ body {
   transition: all 0.25s;
 }
 #more-info #more-info-dialog {
-  width: 260px;
-  padding: 0 6px;
+  width: 240px;
+  padding: 8px;
   background-color: #ffffff;
   color: #bcbcbc;
   font-size: 12px;
