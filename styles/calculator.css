@@ -90,7 +90,7 @@
 }
 
 /* Configure FOV Dimension Dialog */
-#calculator #config-fov-dim {
+#calculator #config {
   position: absolute;
   top: 0;
   left: 0;
@@ -101,11 +101,11 @@
   padding: 4px;
   overflow: hidden;
 }
-#calculator #config-fov-dim:hover {
+#calculator #config:hover {
   cursor: pointer;
   border: 1px solid #eeeeee;
 }
-#calculator #config-fov-dim #config-fov-dim-dialog {
+#calculator #config #config-dialog {
   width: 160px;
   padding: 4px 8px;
   background-color: #ffffff;
@@ -115,7 +115,7 @@
   opacity: 0;
   z-index: 24;
 }
-#calculator #config-fov-dim #cog {
+#calculator #config #cog {
   padding: 8px;
   font-size: 24px;
   font-weight: bold;
@@ -123,20 +123,20 @@
   z-index: 20;
   transition: all 0.25s;
 }
-#calculator #config-fov-dim:hover #cog,
-#calculator #config-fov-dim #cog:hover {
+#calculator #config:hover #cog,
+#calculator #config #cog:hover {
   color: #bcbcbc;
   transition: all 0.25s;
 }
-#calculator #config-fov-dim:hover #config-fov-dim-dialog,
-#calculator #config-fov-dim #config-fov-dim-dialog:hover {
+#calculator #config:hover #config-dialog,
+#calculator #config #config-dialog:hover {
   visibility: visible;
   display: block;
   opacity: 1;
   cursor: pointer;
   transition: all 0.25s;
 }
-#calculator #config-fov-dim #config-fov-dim-dialog label {
+#calculator #config #config-dialog label {
   width: 100%;
   padding: 4px 4px 4px 25px;
   margin: 6px auto;
@@ -150,7 +150,7 @@
   -ms-user-select: none;
   user-select: none;
 }
-#calculator #config-fov-dim #config-fov-dim-dialog label input {
+#calculator #config #config-dialog label input {
   text-align: right;
   position: absolute;
   opacity: 0;
@@ -171,20 +171,10 @@
   background-color: #eeeeee;
   border-radius: 50%;
 }
-#calculator
-  #config-fov-dim
-  #config-fov-dim-dialog
-  label:hover
-  input
-  ~ .checkmark {
+#calculator #config #config-dialog label:hover input ~ .checkmark {
   background-color: #bcbcbc;
 }
-#calculator
-  #config-fov-dim
-  #config-fov-dim-dialog
-  label
-  input:checked
-  ~ .checkmark {
+#calculator #config #config-dialog label input:checked ~ .checkmark {
   background-color: #555555;
 }
 .checkmark:after {
@@ -192,15 +182,10 @@
   position: absolute;
   display: none;
 }
-#calculator
-  #config-fov-dim
-  #config-fov-dim-dialog
-  label
-  input:checked
-  ~ .checkmark:after {
+#calculator #config #config-dialog label input:checked ~ .checkmark:after {
   display: block;
 }
-#calculator #config-fov-dim #config-fov-dim-dialog label .checkmark:after {
+#calculator #config #config-dialog label .checkmark:after {
   top: 5px;
   left: 5px;
   width: 5px;
@@ -217,7 +202,7 @@
   }
 }
 @media (max-width: 700px) {
-  #calculator #config-fov-dim {
+  #calculator #config {
     top: 24px;
   }
 }

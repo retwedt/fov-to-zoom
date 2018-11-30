@@ -21,11 +21,16 @@ const calculator = document.getElementById("calculator");
 const fovToZoomForm = calculator.querySelector("#fov-to-zoom");
 const zoomToFovForm = calculator.querySelector("#zoom-to-fov");
 
-const configFovDimen = calculator.querySelector("#config-fov-dim");
-const configFovForm = configFovDimen.querySelector("#config-fov-dim-dialog");
+const config = calculator.querySelector("#config");
+const configDialog = config.querySelector("#config-dialog");
+const configFovForm = configDialog.querySelector("#config-fov-dim");
+const showLoggingForm = configDialog.querySelector("#config-show-logging");
 
 const outputCard = calculator.querySelector("#output-card");
 const outputEl = outputCard.querySelector("#output");
+
+// Logging off by default.
+let showLogging = false;
 
 /**
  * 3d programs can store horizontal, vertical, and diagonal fov info.

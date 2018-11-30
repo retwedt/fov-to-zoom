@@ -39,23 +39,32 @@
     <!-- TODO(rex): Fades... -->
     <div id="calculator" >
 
-      <div id="config-fov-dim">
+      <div id="config">
         <span id="cog">&#x2699;</span>
-        <form id="config-fov-dim-dialog" onchange="setFovDimen(event)">
-          <div>Select FOV Direction</div>
-          <label >
-            <input type="radio" name="fovDimension" value="horz" checked /> Horizontal
-            <span class="checkmark"></span>
-          </label>
-          <label >
-            <input type="radio" name="fovDimension" value="vert" /> Vertical
-            <span class="checkmark"></span>
-          </label>
-          <label >
-            <input type="radio" name="fovDimension" value="diag" /> Diagonal
-            <span class="checkmark"></span>
-          </label>
-        </form>
+        <div id="config-dialog">
+          <form id="config-fov-dimen" onchange="setFovDimen(event)">
+            <div>Select FOV Direction</div>
+            <label >
+              <input type="radio" name="fovDimension" value="horz" checked /> Horizontal
+              <span class="checkmark"></span>
+            </label>
+            <label >
+              <input type="radio" name="fovDimension" value="vert" /> Vertical
+              <span class="checkmark"></span>
+            </label>
+            <label >
+              <input type="radio" name="fovDimension" value="diag" /> Diagonal
+              <span class="checkmark"></span>
+            </label>
+          </form>
+          <div>--</div>
+          <form id="config-show-logging" onchange="toggleLogging(event)">
+            <label >
+              <input type="checkbox" name="showLogging" value="showLogging" /> Show Logging
+              <span class="checkmark"></span>
+            </label>
+          </form>
+        </div>
       </div>
 
       <form id="fov-to-zoom" onsubmit="calculateZoom(event)" onkeyup="calculateZoom(event)">
