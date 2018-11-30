@@ -9,24 +9,23 @@
 /* SETUP VARIABLES */
 
 // Get some useful elements from the DOM.
-const calculatorSelector = document.getElementById("calculator-selector");
-const selectFovToZoomBtn = calculatorSelector.firstElementChild;
-const selectZoomToFovBtn = calculatorSelector.lastElementChild;
+const selectFovToZoomBtn = document.getElementById("calculator-picker")
+  .firstElementChild;
+const selectZoomToFovBtn = document.getElementById("calculator-picker")
+  .lastElementChild;
+
+const moreInfoBtn = document.getElementById("more-info");
+const moreInfoDialog = moreInfoBtn.querySelector("#more-info-dialog");
 
 const calculator = document.getElementById("calculator");
 const fovToZoomForm = calculator.querySelector("#fov-to-zoom");
 const zoomToFovForm = calculator.querySelector("#zoom-to-fov");
 
-const configFovDimen = calculator.querySelector("#configure-fov-dimen");
-const configFovForm = configFovDimen.querySelector(
-  "#configure-fov-dimen-dialog"
-);
+const configFovDimen = calculator.querySelector("#config-fov-dim");
+const configFovForm = configFovDimen.querySelector("#config-fov-dim-dialog");
 
 const outputCard = calculator.querySelector("#output-card");
 const outputEl = outputCard.querySelector("#output");
-
-const moreInfoBtn = document.getElementById("more-info");
-const moreInfoDialog = moreInfoBtn.querySelector("#more-info-dialog");
 
 /**
  * 3d programs can store horizontal, vertical, and diagonal fov info.
@@ -44,7 +43,6 @@ let currentCalculator = CALCULATOR_TYPES.FOV_TO_ZOOM;
 
 // Remove the zoomToFov calculator (we're starting with the fovToZoom calculator).
 calculator.removeChild(zoomToFovForm);
-
 
 /* FUNCTIONS */
 

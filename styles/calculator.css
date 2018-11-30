@@ -3,10 +3,10 @@
   /* TODO(rex): Fades... */
   /* opacity: 0; */
   position: relative;
-  width: 520px;
+  max-width: 520px;
   border: 1px solid #eee;
   margin: auto;
-  padding: 20px;
+  padding: 60px 20px;
   background: #ffffff;
   z-index: 16;
   transition: all 0.25s;
@@ -83,7 +83,7 @@
 }
 
 /* Configure FOV Dimension Dialog */
-#calculator #configure-fov-dimen {
+#calculator #config-fov-dim {
   position: absolute;
   top: 0;
   left: 0;
@@ -94,11 +94,11 @@
   padding: 4px;
   overflow: hidden;
 }
-#calculator #configure-fov-dimen:hover {
+#calculator #config-fov-dim:hover {
   cursor: pointer;
   border: 1px solid #eeeeee;
 }
-#calculator #configure-fov-dimen #configure-fov-dimen-dialog {
+#calculator #config-fov-dim #config-fov-dim-dialog {
   width: 160px;
   padding: 4px 8px;
   background-color: #ffffff;
@@ -108,34 +108,95 @@
   opacity: 0;
   z-index: 24;
 }
-#calculator #configure-fov-dimen #cog {
+#calculator #config-fov-dim #cog {
+  padding: 8px;
   font-size: 24px;
   font-weight: bold;
   color: #eeeeee;
   transition: all 0.25s;
 }
-#calculator #configure-fov-dimen:hover #cog,
-#calculator #configure-fov-dimen #cog:hover {
+#calculator #config-fov-dim:hover #cog,
+#calculator #config-fov-dim #cog:hover {
   color: #bcbcbc;
   transition: all 0.25s;
 }
-#calculator #configure-fov-dimen:hover #configure-fov-dimen-dialog,
-#calculator #configure-fov-dimen #configure-fov-dimen-dialog:hover {
+#calculator #config-fov-dim:hover #config-fov-dim-dialog,
+#calculator #config-fov-dim #config-fov-dim-dialog:hover {
   visibility: visible;
   display: block;
   opacity: 1;
   cursor: pointer;
   transition: all 0.25s;
 }
-#calculator #configure-fov-dimen #configure-fov-dimen-dialog label {
-  display: block;
+#calculator #config-fov-dim #config-fov-dim-dialog label {
   width: 100%;
-  padding: 2px;
-  margin: auto;
+  padding: 4px 4px 4px 25px;
+  margin: 6px auto;
   text-align: left;
+
+  display: block;
+  position: relative;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
-#calculator #configure-fov-dimen #configure-fov-dimen-dialog label input {
-  display: inline-block;
-  width: 20px;
+#calculator #config-fov-dim #config-fov-dim-dialog label input {
   text-align: right;
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* Create a custom radio button
+ * Source: https://www.w3schools.com/howto/howto_css_custom_checkbox.asp
+ */
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 15px;
+  width: 15px;
+  background-color: #eeeeee;
+  border-radius: 50%;
+}
+#calculator
+  #config-fov-dim
+  #config-fov-dim-dialog
+  label:hover
+  input
+  ~ .checkmark {
+  background-color: #bcbcbc;
+}
+#calculator
+  #config-fov-dim
+  #config-fov-dim-dialog
+  label
+  input:checked
+  ~ .checkmark {
+  background-color: #555555;
+}
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+#calculator
+  #config-fov-dim
+  #config-fov-dim-dialog
+  label
+  input:checked
+  ~ .checkmark:after {
+  display: block;
+}
+#calculator #config-fov-dim #config-fov-dim-dialog label .checkmark:after {
+  top: 5px;
+  left: 5px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: white;
 }

@@ -31,25 +31,29 @@
       </div>
     </div>
 
-    <div id="calculator-selector">
+    <div id="calculator-picker">
       <button class="selected" onclick="selectCalculator(event, CALCULATOR_TYPES.FOV_TO_ZOOM)" >FOV to Zoom</button>
       <button onclick="selectCalculator(event, CALCULATOR_TYPES.ZOOM_TO_FOV)" >Zoom to FOV</button>
     </div>
 
     <!-- TODO(rex): Fades... -->
     <div id="calculator" >
-      <div id="configure-fov-dimen">
+
+      <div id="config-fov-dim">
         <span id="cog">&#x2699;</span>
-        <form id="configure-fov-dimen-dialog" onchange="setFovDimen(event)">
+        <form id="config-fov-dim-dialog" onchange="setFovDimen(event)">
           <div>Select FOV Direction</div>
-          <label for="horz" >
-            <input type="radio" name="fovDimension" id="horz" value="horz" checked onchange="setFovDimen(event)" /> Horizontal
+          <label >
+            <input type="radio" name="fovDimension" value="horz" checked /> Horizontal
+            <span class="checkmark"></span>
           </label>
-          <label for="vert" >
-            <input type="radio" name="fovDimension" id="vert" value="vert" onchange="setFovDimen(event)" /> Vertical
+          <label >
+            <input type="radio" name="fovDimension" value="vert" /> Vertical
+            <span class="checkmark"></span>
           </label>
-          <label for="diag" >
-            <input type="radio" name="fovDimension" id="diag" value="diag" onchange="setFovDimen(event)" /> Diagonal
+          <label >
+            <input type="radio" name="fovDimension" value="diag" /> Diagonal
+            <span class="checkmark"></span>
           </label>
         </form>
       </div>
