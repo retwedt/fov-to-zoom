@@ -1,5 +1,5 @@
 /**
- * FOV to Zoom (and back) Calculator.
+ * FOV to Zoom (and back) Calculator app styles.
  * Created by Rex Twedt
  * Copyright 2018
  */
@@ -19,21 +19,25 @@ body {
   position: absolute;
   top: 0;
   left: 0;
-  color: #bcbcbc;
+  color: #eeeeee;
   background-color: #ffffff;
   border: 1px solid #ffffff;
   z-index: 20;
   padding: 8px;
   overflow: hidden;
+  transition: all 0.25s;
 }
 #more-info:hover {
   cursor: pointer;
+  color: #bcbcbc;
   border: 1px solid #eeeeee;
+  transition: all 0.25s;
 }
 #more-info #more-info-dialog {
   width: 260px;
   padding: 0 6px;
   background-color: #ffffff;
+  color: #bcbcbc;
   font-size: 12px;
   visibility: hidden;
   display: none;
@@ -82,7 +86,7 @@ body {
   flex: 1 auto;
   margin: 0;
   padding: 6px;
-  border: 1px solid #bcbcbc;
+  border: none;
   background-color: #555555;
   color: #bcbcbc;
   font-size: 16px;
