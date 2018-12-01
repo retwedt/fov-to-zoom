@@ -112,6 +112,7 @@ function crossfadeCalculators(container, fromEl, toEl) {
   setTimeout(() => {
     container.removeChild(fromEl);
     container.removeChild(outputCard); // Also remove the output card, to be reinserted later.
+    setOutputTitle();
     container.appendChild(toEl);
     container.appendChild(outputCard); // Add the output card back at the end, so it keeps the correct order.
     container.classList.remove("hide");
@@ -129,8 +130,20 @@ function crossfadeCalculators(container, fromEl, toEl) {
 function switchCalculators(container, fromEl, toEl) {
   container.removeChild(fromEl);
   container.removeChild(outputCard); // Also remove the output card, to be reinserted later.
+  setOutputTitle();
   container.appendChild(toEl);
   container.appendChild(outputCard); // Add the output card back at the end, so it keeps the correct order.
+}
+
+/**
+ * Inelegant handling of the output card title, based on the selected calculator.  Damn.
+ */
+function setOutputTitle() {
+  if (currentCalculator === CALCULATOR_TYPES.FOV_TO_ZOOM) {
+    outputCard.querySelector("h1").textContent = "Zoom (px)";
+  } else if (currentCalculator === CALCULATOR_TYPES.ZOOM_TO_FOV) {
+    outputCard.querySelector("h1").textContent = "FOV (deg)";
+  }
 }
 
 /**
