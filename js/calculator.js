@@ -77,15 +77,15 @@ function radiansToDegrees(value) {
  * @param {number} fieldOfView  - The field of view of the camera (in degrees).
  */
 function fovToZoom(width, height, fieldOfView) {
-  const hyp = Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2));
   const rad = degreesToRadians(fieldOfView / 2);
 
   if (fovDimen === "horz") {
     return width / (2 * Math.tan(rad)); // horizontal
   } else if (fovDimen === "vert") {
-    return hyp / (2 * Math.tan(rad)); // diagonal
-  } else if (fovDimen === "diag") {
     return height / (2 * Math.tan(rad)); // vertical
+  } else if (fovDimen === "diag") {
+    const hyp = Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2));
+    return hyp / (2 * Math.tan(rad)); // diagonal
   }
 }
 
@@ -96,14 +96,13 @@ function fovToZoom(width, height, fieldOfView) {
  * @param {number} zoom   - The zoom value of the camera (in px).
  */
 function zoomToFov(width, height, zoom) {
-  const hyp = Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2));
-
   let fov;
   if (fovDimen === "horz") {
     fov = 2 * Math.atan(width / (zoom * 2)); // horizontal
   } else if (fovDimen === "vert") {
     fov = 2 * Math.atan(height / (zoom * 2)); // vertical
   } else if (fovDimen === "diag") {
+    const hyp = Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2));
     fov = 2 * Math.atan(hyp / (zoom * 2)); // diagonal
   }
   return radiansToDegrees(fov);
