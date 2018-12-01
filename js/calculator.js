@@ -4,8 +4,6 @@
  * Copyright 2018
  */
 
-// TODO(rex): Some nice fading animations!
-
 /* SETUP VARIABLES */
 
 // Get some useful elements from the DOM.
