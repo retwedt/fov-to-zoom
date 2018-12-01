@@ -24,6 +24,7 @@ const configDialog = config.querySelector("#config-dialog");
 const configFovForm = configDialog.querySelector("#config-fov-dim");
 
 const outputCard = calculator.querySelector("#output-card");
+const outputTitle = outputCard.querySelector("h1");
 const outputEl = outputCard.querySelector("#output");
 
 /**
@@ -35,10 +36,18 @@ let fovDimen = "horz";
 
 // Initialize variables to keep track of the current calculator we have selected.
 const CALCULATOR_TYPES = {
-  FOV_TO_ZOOM: "FOV_TO_ZOOM",
-  ZOOM_TO_FOV: "ZOOM_TO_FOV"
+  FOV_TO_ZOOM: {
+    KEY: "FOV_TO_ZOOM",
+    OUTPUT_TITLE: "Zoom (px)",
+    PREVIOUS_VALUE: 0
+  },
+  ZOOM_TO_FOV: {
+    KEY: "ZOOM_TO_FOV",
+    OUTPUT_TITLE: "FOV (deg)",
+    PREVIOUS_VALUE: 0
+  }
 };
-let currentCalculator = CALCULATOR_TYPES.FOV_TO_ZOOM;
+let currentCalculator = CALCULATOR_TYPES.FOV_TO_ZOOM.KEY;
 
 // Remove the zoomToFov calculator (we're starting with the fovToZoom calculator).
 calculator.removeChild(zoomToFovForm);
@@ -114,7 +123,7 @@ function crossfadeCalculators(container, fromEl, toEl) {
   setTimeout(() => {
     container.removeChild(fromEl);
     container.removeChild(outputCard); // Also remove the output card, to be reinserted later.
-    setOutputTitle();
+    setupOutputCard();
     container.appendChild(toEl);
     container.appendChild(outputCard); // Add the output card back at the end, so it keeps the correct order.
     container.classList.remove("hide");
@@ -132,7 +141,7 @@ function crossfadeCalculators(container, fromEl, toEl) {
 function switchCalculators(container, fromEl, toEl) {
   container.removeChild(fromEl);
   container.removeChild(outputCard); // Also remove the output card, to be reinserted later.
-  setOutputTitle();
+  setupOutputCard();
   container.appendChild(toEl);
   container.appendChild(outputCard); // Add the output card back at the end, so it keeps the correct order.
 }
@@ -140,11 +149,15 @@ function switchCalculators(container, fromEl, toEl) {
 /**
  * Inelegant handling of the output card title, based on the selected calculator.  Damn.
  */
-function setOutputTitle() {
-  if (currentCalculator === CALCULATOR_TYPES.FOV_TO_ZOOM) {
-    outputCard.querySelector("h1").textContent = "Zoom (px)";
-  } else if (currentCalculator === CALCULATOR_TYPES.ZOOM_TO_FOV) {
-    outputCard.querySelector("h1").textContent = "FOV (deg)";
+function setupOutputCard() {
+  if (currentCalculator === CALCULATOR_TYPES.FOV_TO_ZOOM.KEY) {
+    outputTitle.textContent = "Zoom (px)";
+    CALCULATOR_TYPES.ZOOM_TO_FOV.PREVIOUS_VALUE = outputEl.textContent;
+    outputEl.textContent = CALCULATOR_TYPES.FOV_TO_ZOOM.PREVIOUS_VALUE;
+  } else if (currentCalculator === CALCULATOR_TYPES.ZOOM_TO_FOV.KEY) {
+    outputTitle.textContent = "FOV (deg)";
+    CALCULATOR_TYPES.FOV_TO_ZOOM.PREVIOUS_VALUE = outputEl.textContent;
+    outputEl.textContent = CALCULATOR_TYPES.ZOOM_TO_FOV.PREVIOUS_VALUE;
   }
 }
 
@@ -152,10 +165,10 @@ function setOutputTitle() {
  * Toggle between selected button states.
  */
 function toggleCalculatorPicker() {
-  if (currentCalculator === CALCULATOR_TYPES.FOV_TO_ZOOM) {
+  if (currentCalculator === CALCULATOR_TYPES.FOV_TO_ZOOM.KEY) {
     selectFovToZoomBtn.classList.add("selected");
     selectZoomToFovBtn.classList.remove("selected");
-  } else if (currentCalculator === CALCULATOR_TYPES.ZOOM_TO_FOV) {
+  } else if (currentCalculator === CALCULATOR_TYPES.ZOOM_TO_FOV.KEY) {
     selectZoomToFovBtn.classList.add("selected");
     selectFovToZoomBtn.classList.remove("selected");
   }
@@ -210,19 +223,19 @@ function selectCalculator(event, type) {
   event.preventDefault();
 
   if (
-    type === CALCULATOR_TYPES.FOV_TO_ZOOM &&
-    currentCalculator === CALCULATOR_TYPES.ZOOM_TO_FOV
+    type === CALCULATOR_TYPES.FOV_TO_ZOOM.KEY &&
+    currentCalculator === CALCULATOR_TYPES.ZOOM_TO_FOV.KEY
   ) {
-    currentCalculator = CALCULATOR_TYPES.FOV_TO_ZOOM;
+    currentCalculator = CALCULATOR_TYPES.FOV_TO_ZOOM.KEY;
 
     toggleCalculatorPicker();
     switchCalculators(calculator, zoomToFovForm, fovToZoomForm);
     // crossfadeCalculators(calculator, zoomToFovForm, fovToZoomForm);
   } else if (
-    type === CALCULATOR_TYPES.ZOOM_TO_FOV &&
-    currentCalculator === CALCULATOR_TYPES.FOV_TO_ZOOM
+    type === CALCULATOR_TYPES.ZOOM_TO_FOV.KEY &&
+    currentCalculator === CALCULATOR_TYPES.FOV_TO_ZOOM.KEY
   ) {
-    currentCalculator = CALCULATOR_TYPES.ZOOM_TO_FOV;
+    currentCalculator = CALCULATOR_TYPES.ZOOM_TO_FOV.KEY;
     toggleCalculatorPicker();
     switchCalculators(calculator, fovToZoomForm, zoomToFovForm);
     // crossfadeCalculators(calculator, fovToZoomForm, zoomToFovForm);
