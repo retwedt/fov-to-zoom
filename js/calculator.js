@@ -100,6 +100,8 @@ function zoomToFov(width, height, zoom) {
   return radiansToDegrees(fov);
 }
 
+/* DOM */
+
 /**
  * Crossfade between calculator for elements, add/remove the output card to keep the order.
  * @param {*} container
