@@ -106,6 +106,52 @@ function zoomToFov(width, height, zoom) {
   return radiansToDegrees(fov);
 }
 
+/**
+ * Crossfade between calculator for elements, add/remove the output card to keep the order.
+ * @param {*} container
+ * @param {*} fromEl
+ * @param {*} toEl
+ */
+function crossfadeCalculators(container, fromEl, toEl) {
+  container.classList.remove("show");
+  container.classList.add("hide");
+  setTimeout(() => {
+    container.removeChild(fromEl);
+    container.removeChild(outputCard); // Also remove the output card, to be reinserted later.
+    container.appendChild(toEl);
+    container.appendChild(outputCard); // Add the output card back at the end, so it keeps the correct order.
+    container.classList.remove("hide");
+    container.classList.add("show");
+  }, 200);
+}
+
+/**
+ * NOTE(rex): I think I'm linking non-animated calculator better for the moment, so I am gonna leave this here.
+ * Switch between calculator for elements, add/remove the output card to keep the order.
+ * @param {*} container
+ * @param {*} fromEl
+ * @param {*} toEl
+ */
+function switchCalculators(container, fromEl, toEl) {
+  container.removeChild(fromEl);
+  container.removeChild(outputCard); // Also remove the output card, to be reinserted later.
+  container.appendChild(toEl);
+  container.appendChild(outputCard); // Add the output card back at the end, so it keeps the correct order.
+}
+
+/**
+ * Toggle between selected button states.
+ */
+function toggleCalculatorPicker() {
+  if (currentCalculator === CALCULATOR_TYPES.FOV_TO_ZOOM) {
+    selectFovToZoomBtn.classList.add("selected");
+    selectZoomToFovBtn.classList.remove("selected");
+  } else if (currentCalculator === CALCULATOR_TYPES.ZOOM_TO_FOV) {
+    selectZoomToFovBtn.classList.add("selected");
+    selectFovToZoomBtn.classList.remove("selected");
+  }
+}
+
 /* EVENT LISTENERS */
 
 /**
@@ -160,26 +206,17 @@ function selectCalculator(event, type) {
   ) {
     currentCalculator = CALCULATOR_TYPES.FOV_TO_ZOOM;
 
-    selectZoomToFovBtn.classList.remove("selected");
-    selectFovToZoomBtn.classList.add("selected");
-
-    calculator.removeChild(zoomToFovForm);
-    calculator.removeChild(outputCard); // Also remove the output card, to be reinserted later.
-    calculator.appendChild(fovToZoomForm);
-    calculator.appendChild(outputCard); // Add the output card back at the end, so it keeps the correct order.
+    toggleCalculatorPicker();
+    switchCalculators(calculator, zoomToFovForm, fovToZoomForm);
+    // crossfadeCalculators(calculator, zoomToFovForm, fovToZoomForm);
   } else if (
     type === CALCULATOR_TYPES.ZOOM_TO_FOV &&
     currentCalculator === CALCULATOR_TYPES.FOV_TO_ZOOM
   ) {
     currentCalculator = CALCULATOR_TYPES.ZOOM_TO_FOV;
-
-    selectFovToZoomBtn.classList.remove("selected");
-    selectZoomToFovBtn.classList.add("selected");
-
-    calculator.removeChild(fovToZoomForm);
-    calculator.removeChild(outputCard); // Also remove the output card, to be reinserted later.
-    calculator.appendChild(zoomToFovForm);
-    calculator.appendChild(outputCard); // Add the output card back at the end, so it keeps the correct order.
+    toggleCalculatorPicker();
+    switchCalculators(calculator, fovToZoomForm, zoomToFovForm);
+    // crossfadeCalculators(calculator, fovToZoomForm, zoomToFovForm);
   } else {
     console.log("Calculator already active!");
   }
